@@ -1,0 +1,31 @@
+{
+  "name": "@rentflow/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./demo": "./src/adapters/demo.ts",
+    "./production": "./src/adapters/production.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@rentflow/core": "workspace:*",
+    "@rentflow/db": "workspace:*",
+    "@supabase/supabase-js": "^2.118.0",
+    "drizzle-orm": "^0.45.4",
+    "exceljs": "^4.4.0",
+    "papaparse": "^5.7.0",
+    "pg-boss": "^12.38.0",
+    "puppeteer-core": "^25.16.0",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.14",
+    "@types/papaparse": "^5.5.2",
+    "@types/qrcode": "^1.5.6"
+  }
+}

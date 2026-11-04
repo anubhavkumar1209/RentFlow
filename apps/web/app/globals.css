@@ -1,0 +1,178 @@
+@import "tailwindcss";
+@import "@rentflow/ui/tokens.css";
+
+/* Tailwind must see the classes used inside the shared component package. */
+@source "../../../packages/ui/src";
+
+/* ─── Logo motion: "Draw & confirm" (components/brand/logo.tsx) ───────────── */
+
+@keyframes rf-logo-draw {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes rf-logo-pop {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+.rf-logo {
+  transform-origin: center;
+}
+.rf-logo .rf-logo-house,
+.rf-logo .rf-logo-tick {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+}
+/* Once, when the page loads. */
+.rf-logo[data-motion~="intro"] .rf-logo-house {
+  animation: rf-logo-draw 0.9s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+.rf-logo[data-motion~="intro"] .rf-logo-tick {
+  animation: rf-logo-draw 0.35s 0.85s ease-out both;
+}
+.rf-logo[data-motion~="intro"] {
+  animation: rf-logo-pop 0.35s 1.15s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+/* Again whenever the pointer is over the logo's link. (A different animation name
+   restarts it, so it replays on every hover.) */
+@keyframes rf-logo-draw-again {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes rf-logo-pop-again {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+.rf-logo-trigger:hover .rf-logo[data-motion~="hover"] .rf-logo-house,
+.rf-logo-trigger:focus-visible .rf-logo[data-motion~="hover"] .rf-logo-house {
+  animation: rf-logo-draw-again 0.7s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+.rf-logo-trigger:hover .rf-logo[data-motion~="hover"] .rf-logo-tick,
+.rf-logo-trigger:focus-visible .rf-logo[data-motion~="hover"] .rf-logo-tick {
+  animation: rf-logo-draw-again 0.3s 0.6s ease-out both;
+}
+.rf-logo-trigger:hover .rf-logo[data-motion~="hover"],
+.rf-logo-trigger:focus-visible .rf-logo[data-motion~="hover"] {
+  animation: rf-logo-pop-again 0.3s 0.85s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rf-logo,
+  .rf-logo .rf-logo-house,
+  .rf-logo .rf-logo-tick {
+    animation: none !important;
+  }
+}
+
+/* ─── Landing page (components/landing) ─────────────────────────────────── */
+
+/* Letter-spacing breaks Devanagari conjuncts, so Hindi never gets tracking. */
+:lang(hi) [class*="tracking-"] {
+  letter-spacing: 0;
+}
+
+/* Hero: soft mint glow over a faint grid that fades out towards the edges. */
+.rf-hero {
+  background:
+    radial-gradient(55% 45% at 50% 0%, rgb(94 234 212 / 0.28), transparent 70%),
+    radial-gradient(35% 30% at 85% 30%, rgb(15 118 110 / 0.1), transparent 70%),
+    #fff;
+}
+.rf-grid {
+  background-image:
+    linear-gradient(to right, rgb(15 23 42 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(15 23 42 / 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(60% 55% at 50% 20%, black, transparent);
+}
+
+/* 3D stage; the inner element follows the pointer (components/landing/tilt.tsx). */
+.rf-stage {
+  perspective: 1800px;
+}
+.rf-tilt {
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+.rf-3d {
+  transform-style: preserve-3d;
+}
+
+/* The product preview rises and settles into its tilt on load. */
+@keyframes rf-rise {
+  from { opacity: 0; transform: translateY(60px) rotateX(18deg); }
+  to { opacity: 1; transform: none; }
+}
+.rf-rise {
+  animation: rf-rise 1.1s 0.15s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transform-origin: 50% 100%;
+}
+
+/* Gentle float for the overlapping WhatsApp card. */
+@keyframes rf-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -10px; }
+}
+.rf-float {
+  animation: rf-float 6s ease-in-out infinite;
+}
+
+/* A payment row turns from "Confirming" to "Matched with bank". 8-second loop. */
+@keyframes rf-wait-cycle {
+  0%, 25% { opacity: 1; }
+  30%, 92% { opacity: 0; }
+  97%, 100% { opacity: 1; }
+}
+@keyframes rf-paid-cycle {
+  0%, 25% { opacity: 0; transform: translateY(4px); }
+  30%, 92% { opacity: 1; transform: none; }
+  97%, 100% { opacity: 0; }
+}
+.rf-live .rf-wait { animation: rf-wait-cycle 8s infinite both; }
+.rf-live .rf-paid { animation: rf-paid-cycle 8s infinite both; }
+
+/* Sections rise in as you scroll (where the browser supports scroll-driven animations). */
+@keyframes rf-reveal {
+  from { opacity: 0; transform: translateY(32px); }
+  to { opacity: 1; transform: none; }
+}
+@supports (animation-timeline: view()) {
+  .rf-reveal {
+    animation: rf-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 22%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rf-tilt { transition: none; }
+  .rf-rise, .rf-float, .rf-reveal { animation: none !important; }
+  /* Show the finished, confirmed state. */
+  .rf-live .rf-wait { animation: none; opacity: 0; }
+  .rf-live .rf-paid { animation: none; opacity: 1; transform: none; }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE "payment_matches" ADD CONSTRAINT "payment_matches_org_id_orgs_id_fk" FOREIGN KEY ("org_id") REFERENCES "public"."orgs"("id") ON DELETE cascade ON UPDATE no action;

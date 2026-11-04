@@ -1,0 +1,25 @@
+{
+  "name": "@rentflow/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts",
+    "./local": "./src/local.ts"
+  },
+  "scripts": {
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.4",
+    "postgres": "^3.4.9",
+    "@electric-sql/pglite": "^0.5.14"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.11",
+    "@rentflow/core": "workspace:*"
+  }
+}
